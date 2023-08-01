@@ -1,7 +1,9 @@
-import {useReducer, useState} from "react";
-import {Board} from "./types.ts";
-import cx from "classnames";
-import {ChevronDown} from 'lucide-react';
+import {Inter} from 'next/font/google'
+import {useReducer} from "react";
+import {Board} from "@/pages/types";
+import {BoardColumn} from "@/components/Board/Column";
+
+const inter = Inter({subsets: ['latin']})
 
 
 const newGame = () => {
@@ -26,44 +28,6 @@ type BoardProps = {
     onClick: (column: number) => void
 }
 
-function BoardHole({player}: { player: number }) {
-    return <div className="h-32 w-32 flex items-center justify-center">
-        <div className={cx(
-            "h-24 w-24 rounded-full border-2 border-t-4 border-black",
-            {"bg-white": player === 0},
-            {"bg-red-500": player === 1},
-            {"bg-yellow-400": player === 2}
-        )}/>
-    </div>;
-}
-
-
-function BoardColumn({onClick, holes}: { currentPlayer: number, onClick: () => void, holes: number[] }) {
-    const [hovered, setHovered] = useState(false)
-
-    const hasEmptyHole = holes.some((cell) => cell === 0)
-    const handleClick = hasEmptyHole ? onClick : () => {}
-
-
-    return <div
-        className={cx(
-            {"bg-blue-600": hovered},
-            {"bg-blue-700": !hovered}
-        )}
-        onPointerEnter={() => setHovered(true)}
-        onPointerLeave={() => setHovered(false)}
-        onClick={handleClick}>
-        <div className="bg-white">
-            <ChevronDown size={72} className={cx(
-                "mx-auto text-blue-800", {
-                    "opacity-0": !(hovered && hasEmptyHole),
-                })}/>
-        </div>
-        {holes.map((cell, y) =>
-            <BoardHole key={y} player={cell}/>
-        )}</div>
-}
-
 
 const GameBoard = ({board, onClick, currentPlayer}: BoardProps) => {
     return (
@@ -78,7 +42,8 @@ const GameBoard = ({board, onClick, currentPlayer}: BoardProps) => {
                 </div>
                 <div className="flex flex-row justify-between">
                     <div className="bg-blue-700 w-8 h-36"/>
-                    <div className="pt-5 font-medium">It is {currentPlayer == 1? "your" : "your opponent's"} turn.</div>
+                    <div className="pt-5 font-medium">It is {currentPlayer == 1 ? "your" : "your opponent's"} turn.
+                    </div>
                     <div className="bg-blue-700 w-8 h-36"/>
                 </div>
             </div>
@@ -119,7 +84,7 @@ const gameReducer = (state: State, action: Action) => {
     }
 };
 
-function App() {
+export default function Home() {
     const [state, dispatch] = useReducer(gameReducer, newGame());
 
     // Destructure state for ease of use
@@ -140,5 +105,3 @@ function App() {
         </>
     )
 }
-
-export default App
