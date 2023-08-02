@@ -5,6 +5,7 @@ import {BoardColumn} from "@/components/Board/Column";
 import {Game} from "@/lib/types";
 import {isGameOver} from "@/lib/board";
 import {GameStatus} from "@/components/GameStatus";
+import {placeMarker} from "@/app/game/[id]/actions";
 
 
 type BoardProps = {
@@ -38,21 +39,15 @@ const gameReducer = (state: Game, column: Action) => {
 };
 
 export const GameBoard = ({game: serverGame}: BoardProps) => {
-    // let [isPending, startTransition] = useTransition()
-    // console.log('1', game.winner)
     const [game, placeOptimisticMarker] = useOptimistic(
         serverGame,
         gameReducer,
     )
-    const handleClick = (column: number) => {
-        console.log('clicked', column)
-    }
 
-    console.log('og', game.winner)
-    console.log('ag', serverGame.winner)
-    // const {board, currentPlayer, winner} = optimisticGame
+    console.log('sg', serverGame.currentPlayer)
+    console.log('og', game.currentPlayer)
 
-    const gameIsOver = game.winner !== null
+
     return (
         <div>
             <div className="inline-grid grid-cols-7">
@@ -60,16 +55,19 @@ export const GameBoard = ({game: serverGame}: BoardProps) => {
                     <BoardColumn
                         key={x}
                         index={x}
-                        onColumnClick={placeOptimisticMarker}
+                        onColumnClick={async () => {
+                            placeOptimisticMarker(x)
+                            await placeMarker(x)
+                        }}
                         holes={col}
-                        disabled={gameIsOver}
+                        disabled={game.winner !== null}
                     />
                 )}
             </div>
             <div className="flex flex-row justify-between">
                 <div className="bg-blue-700 w-8 h-36"/>
                 <div className="pt-5 font-medium">
-                    <GameStatus winner={game.winner} currentPlayer={game.currentPlayer} />
+                    <GameStatus winner={game.winner} currentPlayer={game.currentPlayer}/>
                 </div>
                 <div className="bg-blue-700 w-8 h-36"/>
             </div>
