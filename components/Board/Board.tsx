@@ -9,6 +9,7 @@ import {placeMarker} from "@/app/game/[id]/actions";
 
 
 type BoardProps = {
+    id: number,
     game: Game
 }
 
@@ -38,7 +39,7 @@ const gameReducer = (state: Game, column: Action) => {
     }
 };
 
-export const GameBoard = ({game: serverGame}: BoardProps) => {
+export const GameBoard = ({id, game: serverGame}: BoardProps) => {
     const [game, placeOptimisticMarker] = useOptimistic(
         serverGame,
         gameReducer,
@@ -57,7 +58,7 @@ export const GameBoard = ({game: serverGame}: BoardProps) => {
                         index={x}
                         onColumnClick={async () => {
                             placeOptimisticMarker(x)
-                            await placeMarker(x)
+                            await placeMarker(id, x)
                         }}
                         holes={col}
                         disabled={game.winner !== null}
