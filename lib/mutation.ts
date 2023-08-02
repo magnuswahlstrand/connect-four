@@ -6,63 +6,63 @@ import {entities, replicacheClients} from "@/db/schema";
 import {User, userValidation} from "@/types/user";
 import {eq} from "drizzle-orm";
 
-
-async function updateUser(tx: TxType, user: User, spaceID: string, nextVersion: number) {
-    await tx.insert(entities)
-        .values({
-                id: user.id,
-                type: 'user',
-                space_id: spaceID,
-                data: user,
-                deleted: false,
-                version: nextVersion,
-            }
-        )
-        .onConflictDoUpdate({
-                target: entities.id,
-                set: {
-                    data: user,
-                    version: nextVersion,
-                }
-            }
-        );
-}
-
-export async function processMutation(tx: TxType, clientID: string, spaceID: string, mutation: Mutation) {
-    const prevVersion = await getSpaceVersion(tx, spaceID)
-    const nextVersion = prevVersion + 1;
-
-    const lastMutationID = await getLastMutationID(tx, clientID, false);
-    const nextMutationID = lastMutationID + 1;
-
-    // It's common due to connectivity issues for clients to send a
-    // mutation which has already been processed. Skip these.
-    if (mutation.id < nextMutationID) {
-        console.log(`Mutation ${mutation.id} has already been processed - skipping`);
-        return;
-    }
-
-    // If the Replicache client is working correctly, this can never
-    // happen. If it does there is nothing to do but return an error to
-    // client and report a bug to Replicache.
-    if (mutation.id > nextMutationID) {
-        throw new Error(`Mutation ${mutation.id} is from the future - aborting`);
-    }
-
-    switch (mutation.name) {
-        case 'placeMarker':
-            const user = userValidation.parse(mutation.args)
-            await updateUser(tx, user, spaceID, nextVersion);
-            break;
-        default:
-            throw new Error(`Unknown mutation: ${mutation.name}`);
-    }
-
-    await setLastMutationID(tx, clientID, nextMutationID);
-    await setSpaceVersion(tx, spaceID, nextVersion)
-
-    // await sendPoke();
-}
+//
+// async function updateUser(tx: TxType, user: User, spaceID: string, nextVersion: number) {
+//     await tx.insert(entities)
+//         .values({
+//                 id: user.id,
+//                 type: 'user',
+//                 space_id: spaceID,
+//                 data: user,
+//                 deleted: false,
+//                 version: nextVersion,
+//             }
+//         )
+//         .onConflictDoUpdate({
+//                 target: entities.id,
+//                 set: {
+//                     data: user,
+//                     version: nextVersion,
+//                 }
+//             }
+//         );
+// }
+//
+// export async function processMutation(tx: TxType, clientID: string, spaceID: string, mutation: Mutation) {
+//     const prevVersion = await getSpaceVersion(tx, spaceID)
+//     const nextVersion = prevVersion + 1;
+//
+//     const lastMutationID = await getLastMutationID(tx, clientID, false);
+//     const nextMutationID = lastMutationID + 1;
+//
+//     // It's common due to connectivity issues for clients to send a
+//     // mutation which has already been processed. Skip these.
+//     if (mutation.id < nextMutationID) {
+//         console.log(`Mutation ${mutation.id} has already been processed - skipping`);
+//         return;
+//     }
+//
+//     // If the Replicache client is working correctly, this can never
+//     // happen. If it does there is nothing to do but return an error to
+//     // client and report a bug to Replicache.
+//     if (mutation.id > nextMutationID) {
+//         throw new Error(`Mutation ${mutation.id} is from the future - aborting`);
+//     }
+//
+//     switch (mutation.name) {
+//         case 'placeMarker':
+//             const user = userValidation.parse(mutation.args)
+//             await updateUser(tx, user, spaceID, nextVersion);
+//             break;
+//         default:
+//             throw new Error(`Unknown mutation: ${mutation.name}`);
+//     }
+//
+//     await setLastMutationID(tx, clientID, nextMutationID);
+//     await setSpaceVersion(tx, spaceID, nextVersion)
+//
+//     // await sendPoke();
+// }
 //
 // // TODO: Clean up
 // export async function getLastMutationID(t: TxType, clientID: string, required: boolean) {

@@ -18,42 +18,6 @@ const newGame = () => {
 };
 
 
-type BoardProps = {
-    board: Board
-    onClick: (column: number) => void
-    currentPlayer: number
-    winner: number | null
-}
-
-
-const GameBoard = ({board, onClick, currentPlayer, winner}: BoardProps) => {
-    return (
-        <>
-            <div>
-                <div className="inline-grid grid-cols-7">
-                    {board.map((col, x) =>
-                        <BoardColumn key={x}
-                                     onClick={() => onClick(x)}
-                                     holes={col}
-                                     disabled={winner !== null}
-                        />
-                    )}
-                </div>
-                <div className="flex flex-row justify-between">
-                    <div className="bg-blue-700 w-8 h-36"/>
-                    <div className="pt-5 font-medium">
-                        {!winner && `It is ${currentPlayer == 1 ? "your" : "your opponent's"} turn.`}
-                        {winner &&
-                            <div className="text-2xl font-bold">{winner === 1 ? "You" : "Your opponent"} won!</div>
-                        }
-                    </div>
-                    <div className="bg-blue-700 w-8 h-36"/>
-                </div>
-            </div>
-        </>
-    );
-};
-
 interface State {
     board: Board;
     currentPlayer: number;
