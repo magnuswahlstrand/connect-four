@@ -1,6 +1,5 @@
 import {emptyBoard} from "@/lib/board";
 import {GameBoard} from "@/components/Board/Board";
-import {Foo} from "@/components/Board/Foo";
 
 function getGame(gameID: string) {
     return {
@@ -10,7 +9,7 @@ function getGame(gameID: string) {
     };
 }
 
-export default function Page({params}: { params: {gameID: string}}) {
+export default function Page({params}: { params: { gameID: string } }) {
     const game = getGame(params.gameID)
 
     console.log('server rerendered')
@@ -18,7 +17,6 @@ export default function Page({params}: { params: {gameID: string}}) {
         <div className="text-2xl font-bold mb-2">Why don&apos;t you</div>
         <div className="text-4xl text-red-600 font-semibold">Connect four?</div>
         <GameBoard game={game}/>
-        <Foo/>
     </div>
 }
 
