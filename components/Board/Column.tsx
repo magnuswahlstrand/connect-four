@@ -23,19 +23,21 @@ export function BoardColumn({onColumnClick, holes, disabled, index}: ColumnProps
         <input type={"hidden"} name={"columnIndex"} value={index}/>
         <button type="submit" disabled={!hasEmptyHole || disabled}>
             <div
-                className={hovered && !disabled ? "bg-blue-600" : "bg-blue-700"}
+
                 onPointerEnter={() => setHovered(true)}
                 onPointerLeave={() => setHovered(false)}
             >
-                <div className="bg-white">
-                    <ChevronDown size={72} className={cx(
-                        "mx-auto text-blue-800", {
+                <div className="-my-2">
+                    <ChevronDown className={cx(
+                        "md:h-16 md:w-16 h-8 w-8 mx-auto text-blue-800", {
                             "opacity-0": !(hovered && hasEmptyHole && !disabled)
                         })}/>
                 </div>
-                {holes.map((cell, y) =>
-                    <BoardHole key={y} player={cell}/>
-                )}</div>
+                <div className={hovered && !disabled ? "bg-blue-600" : "bg-blue-700"}>
+                    {holes.map((cell, y) =>
+                        <BoardHole key={y} player={cell}/>
+                    )}</div>
+            </div>
         </button>
     </form>
 }

@@ -1,4 +1,4 @@
-import type { Config } from "drizzle-kit";
+import type {Config} from "drizzle-kit";
 import {connectionString} from "./db";
 
 export default {
@@ -6,5 +6,5 @@ export default {
     driver: 'pg',
     dbCredentials: {
         connectionString: connectionString
-    }
+    },
 } satisfies Config;

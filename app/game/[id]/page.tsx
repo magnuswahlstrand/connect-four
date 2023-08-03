@@ -1,5 +1,6 @@
 import {GameBoard} from "@/components/Board/Board";
-import {getGame} from "@/db";
+
+import {getGame} from "@/db/db";
 
 export default async function Page({params}: { params: { id: string } }) {
     const gameID = parseInt(params.id)
@@ -9,9 +10,12 @@ export default async function Page({params}: { params: { id: string } }) {
     }
 
     const game = await getGame(gameID)
+    if(!game) {
+        // TODO: return 404?
+        return <div>Game not found</div>
+    }
 
-    console.log('server rerendered')
-    return <div className={"flex flex-col items-center justify-center h-screen cursor-pointer"}>
+    return <div className={"flex flex-col items-center justify-center pt-4"}>
         <div className="text-2xl font-bold mb-2">Why don&apos;t you</div>
         <div className="text-4xl text-red-600 font-semibold">Connect four?</div>
         <GameBoard game={game} id={gameID}/>

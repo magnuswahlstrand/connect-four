@@ -1,12 +1,11 @@
 import {drizzle, PostgresJsQueryResultHKT} from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import {PgTransaction} from "drizzle-orm/pg-core";
-import {eq, ExtractTablesWithRelations} from "drizzle-orm";
-import {games} from "@/db/schema";
-import {emptyBoard} from "@/lib/board";
+import {ExtractTablesWithRelations} from "drizzle-orm";
 
 
 export const connectionString = process.env.DATABASE_URL ?? ""
+console.log(connectionString)
 let client = postgres(connectionString);
 export const db = drizzle(client);
 
@@ -17,18 +16,3 @@ export const dbWithTx = async <T>(fn: (tx: TxType) => Promise<T>): Promise<T> =>
 }
 
 
-export const newGame = async () => {
-    const [newGame] = await db.insert(games).values({
-        value: {
-            board: emptyBoard(),
-            currentPlayer: 1,
-            winner: null
-        }
-    }).returning().execute();
-    return newGame.id;
-}
-
-export const getGame = async (gameID: number) => {
-    const [game] = await db.select().from(games).where(eq(games.id, gameID))
-    return game.value
-}

@@ -19,9 +19,6 @@ export const GameBoard = ({id, game: serverGame}: BoardProps) => {
         gameReducer,
     )
 
-    console.log('sg', serverGame.currentPlayer)
-    console.log('og', game.currentPlayer)
-
 
     return (
         <div>
@@ -40,11 +37,11 @@ export const GameBoard = ({id, game: serverGame}: BoardProps) => {
                 )}
             </div>
             <div className="flex flex-row justify-between">
-                <div className="bg-blue-700 w-8 h-36"/>
+                <div className="bg-blue-700 w-8 h-16"/>
                 <div className="pt-5 font-medium">
                     <GameStatus winner={game.winner} currentPlayer={game.currentPlayer}/>
                 </div>
-                <div className="bg-blue-700 w-8 h-36"/>
+                <div className="bg-blue-700 w-8 h-16"/>
             </div>
         </div>
     );

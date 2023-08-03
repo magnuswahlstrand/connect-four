@@ -1,18 +1,6 @@
 import {Game} from "@/lib/types";
 import {isGameOver} from "@/lib/board";
-
-const isAllowedMove = (game: Game, column: number) => {
-    if (game.winner) {
-        console.log('game is over')
-        return false
-    }
-
-    if (y === -1) {
-        console.log('invalid move')
-        return false
-    }
-    return true
-}
+// TODO: Refactor file
 
 export const foo = (game: Game, column: number) => {
     if (game.winner) {
