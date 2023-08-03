@@ -8,23 +8,32 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
-    "test-watch": "vitest --watch"
+    "test-watch": "vitest --watch",
+    "db-up": "docker-compose -f tools/docker-compose.yaml up -d",
+    "db-down": "docker-compose -f tools/docker-compose.yaml down"
   },
   "dependencies": {
     "@types/node": "20.4.5",
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
-    "autoprefixer": "10.4.14",
+    "drizzle-orm": "^0.27.2",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "lucide-react": "^0.263.1",
     "next": "13.4.12",
-    "postcss": "8.4.27",
+    "postgres": "^3.3.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tailwindcss": "3.3.3",
+    "replicache": "^12.2.2",
+    "replicache-react": "^2.11.0",
     "typescript": "5.1.6",
     "vite-tsconfig-paths": "^4.2.0",
     "vitest": "^0.33.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "drizzle-kit": "^0.19.12",
+    "postcss": "^8.4.27",
+    "tailwindcss": "^3.3.3"
   }
 }
