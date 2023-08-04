@@ -42,7 +42,7 @@ function countDiagonalAscending(board: number[][], x: number, y: number, current
     return 1 + count(upRight, board, x, y, currentPlayer) + count(downLeft, board, x, y, currentPlayer);
 }
 
-export const isGameOver = (board: Board, x: number, y: number, currentPlayer: number): boolean => {
+export const isGameFinished = (board: Board, x: number, y: number, currentPlayer: number): boolean => {
     if (countHorizontal(board, x, y, currentPlayer) >= 4) {
         return true
     }
@@ -167,12 +167,12 @@ if (import.meta.vitest) {
         })
 
         it('game on empty board is not over ', () => {
-            const res = isGameOver(emptyBoard(), 1, 1, 1)
+            const res = isGameFinished(emptyBoard(), 1, 1, 1)
             expect(res).eq(false)
         })
 
         it('game is over ', () => {
-            const res = isGameOver(TEST_BOARD, 1, 1, 1)
+            const res = isGameFinished(TEST_BOARD, 1, 1, 1)
             expect(res).eq(true)
         })
     })

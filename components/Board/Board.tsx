@@ -11,14 +11,14 @@ import {gameReducer} from "@/lib/game-logic";
 type BoardProps = {
     id: number,
     game: Game
+    playerID: string
 }
 
-export const GameBoard = ({id, game: serverGame}: BoardProps) => {
+export const GameBoard = ({playerID, id, game: serverGame}: BoardProps) => {
     const [game, placeOptimisticMarker] = useOptimistic(
         serverGame,
         gameReducer,
     )
-
 
     return (
         <div>
@@ -39,7 +39,7 @@ export const GameBoard = ({id, game: serverGame}: BoardProps) => {
             <div className="flex flex-row justify-between">
                 <div className="bg-blue-700 w-8 h-16"/>
                 <div className="pt-5 font-medium">
-                    <GameStatus winner={game.winner} currentPlayer={game.currentPlayer}/>
+                    <GameStatus game={game} playerID={playerID}/>
                 </div>
                 <div className="bg-blue-700 w-8 h-16"/>
             </div>

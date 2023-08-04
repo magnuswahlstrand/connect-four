@@ -1,15 +1,36 @@
-import {z} from "zod";
+import {z} from 'zod';
 
-
-export const gameValidation = z.object({
+const NewGame = z.object({
+    state: z.literal("new"),
     board: z.array(z.array(z.number())),
-    currentPlayer: z.number(),
-    winner: z.number().nullable(),
-})
+    player1: z.string(),
+    player2: z.null(),
+    currentPlayer: z.null(),
+    winner: z.null(),
+});
 
-export const boardValidation = z.array(z.array(z.number()))
+const OngoingGame = z.object({
+    state: z.literal("ongoing"),
+    board: z.array(z.array(z.number())),
+    player1: z.string(),
+    player2: z.string(),
+    currentPlayer: z.string(),
+    winner: z.null(),
+});
 
-export type Game = z.infer<typeof gameValidation>;
-export type Board = z.infer<typeof boardValidation>;
+const FinishedGame = z.object({
+    state: z.literal("finished"),
+    board: z.array(z.array(z.number())),
+    player1: z.string(),
+    player2: z.string(),
+    currentPlayer: z.null(),
+    winner: z.string(),
+});
 
-export const pullGameValidation = z.array(z.tuple([z.string(), gameValidation])).min(1).max(1)
+export const Game = z.union([NewGame, OngoingGame, FinishedGame]);
+
+export type Game = z.infer<typeof Game>
+export type OngoingGame = z.infer<typeof OngoingGame>
+export type FinishedGame = z.infer<typeof FinishedGame>
+
+export type GameStates = Game["state"]
