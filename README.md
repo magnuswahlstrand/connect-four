@@ -4,11 +4,11 @@
 ## TODO
 * [x] Add win criteria
 * [x] It is your turn/opponents
-* [ ] Implement online versus
-* [ ] Add state for full board
+* [x] Implement online versus
+* [x] Add state for full board
+* [x] List player games
+* [x] Join game
 * [ ] Restart game
-* [ ] List player games
-* [ ] Join game
 * [ ] Share link
 * [ ] Poke player on change
 

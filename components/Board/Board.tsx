@@ -28,7 +28,7 @@ export const GameBoard = ({playerID, id, game: serverGame}: BoardProps) => {
                         key={x}
                         index={x}
                         onColumnClick={async () => {
-                            placeOptimisticMarker(x)
+                            placeOptimisticMarker({playerID, column: x})
                             await placeMarker(id, x)
                         }}
                         holes={col}

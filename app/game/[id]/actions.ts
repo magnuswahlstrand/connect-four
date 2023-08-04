@@ -17,14 +17,10 @@ export async function placeMarker(gameId: number, column: number) {
     const g = await getGame(gameId)
     const oldGame = Game.parse(g)
 
-    // TODO: Move into reducer
-    if (oldGame.currentPlayer === player.id) {
-        console.log('Not users turn, should not happen')
-        const newGame = gameReducer(oldGame, column)
-        await db.update(games).set({
-            ...newGame,
-        }).where(eq(games.id, gameId)).execute()
-    }
+    const newGame = gameReducer(oldGame, {playerID: player.id, column})
+    await db.update(games).set({
+        ...newGame,
+    }).where(eq(games.id, gameId)).execute()
 
     revalidatePath('/game/' + gameId)
 }

@@ -1,14 +1,21 @@
-import {FinishedGame, Game, OngoingGame} from "@/lib/types";
+import type {FinishedGame, Game, OngoingGame} from "@/lib/types";
 import {isGameFinished} from "@/lib/board";
 // TODO: Refactor file
 
-export const gameReducer = (game: Game, column: number) => {
+type Action = { playerID: string, column: number }
+
+export const gameReducer = (game: Game, action: Action) => {
+    if (game.currentPlayer !== action.playerID) {
+        console.log('Not users turn, should not happen')
+        return game
+    }
+
     if (game.state !== 'ongoing') {
         console.log(`game is in state ${game.state}, ignoring move`)
         return game
     }
 
-    const x = column
+    const x = action.column
     const y = game.board[x].lastIndexOf(0)
     if (y === -1) {
         console.log('invalid move')
